@@ -1,0 +1,13 @@
+quest itemelvevo begin
+  state start begin
+		when login begin
+			local item = {15110} --- ide írod hogy miket vegyen el. pl local item = {15110, 235, 4325}
+			for i = 1, table.getn(item), 1 do
+				if pc.count_item(item[i]) > 0 then
+					local szam = pc.count_item(item[i])
+					pc.remove_item(item[i], szam)
+				end
+			end
+		end
+	end
+end
