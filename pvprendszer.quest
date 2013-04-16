@@ -1,0 +1,70 @@
+              ---              --------        -------------------------   ----             ---
+            -------            --------      -------------             --- ----           -------
+           ----------          --------    -------    ----              -------          ----------
+        --------------         --------  -------      ----              -------        --------------
+       ----------------        -------- -------       ----            ---  ----       ----------------
+      --------- ---------      ---------------        ------------------   ----      --------- ---------
+     ---------   ---------     ---------------        ------------------   ----     ---------   ---------
+    ---------     ---------    --------  -------      ----          ---    ----    ---------     ---------
+   ---------       ---------   --------    -------    ----           ---   ----   ---------       ---------
+  ---------         ---------  --------      -------  ----            ---  ----  ---------         ---------
+ ---------           --------- --------        -----------             --- ---- ---------           ---------
+---------             -----------------         ----------              ----------------             ---------
+
+
+quest pvprendsz begin
+  state start begin
+		when kill begin
+			if npc.is_pc() then
+				pc.setqf("playerkill", pc.getqf("playerkill") + 1)
+			else
+				pc.setqf("mobkill", pc.getqf("mobkill") + 1)
+			end
+		end
+		
+		when 9004.chat."Kérek pontokat" with pc.is_gm() begin
+			pc.setqf("mobkill", 10000)
+			pc.setqf("playerkill", 1000)
+			pc.setqf("osszkill", 0)
+			setskin(NOWINDOW)
+		end
+		
+		when 9004.chat."Szeretném beváltani a pontjaimat" begin
+			local minimumkill = {1000, 5000, 12000, 20000, 50000}
+			local next = pc.getqf("osszkill") + 1
+			say_title(mob_name(9004))
+			say("")
+			say("Neked " ..pc.getqf("mobkill").. " szörny pontod van")
+			say("és " ..pc.getqf("playerkill").. " játékos pontos van")
+			say("")
+			local a = pc.getqf("playerkill") * 10 + pc.getqf("mobkill")
+			say_reward("Összesen: " ..a.. "  pontod van")
+			say("")
+			say_reward("A következő jutalomhoz " ..minimumkill[next].. " kell")
+			local b = select("Beváltom", "Bezárás")
+			if b == 1 then
+				if a < minimumkill[next] then
+					say_title("Hiba")
+					say("")
+					say("Sajnos túl kevés pontod van, legalább " ..minimumkill[next].. " kell")
+				else
+					if a >= 1000 and pc.getqf("osszkill") == 0 then
+						affect.add_collect(apply.ATT_BONUS_TO_WARRIOR, 10, 60*60*24*365*60)
+						affect.add_collect(apply.ATT_BONUS_TO_ASSASSIN, 10, 60*60*24*365*60)
+						affect.add_collect(apply.ATT_BONUS_TO_SURA, 10, 60*60*24*365*60)
+						affect.add_collect(apply.ATT_BONUS_TO_SHAMAN, 10, 60*60*24*365*60)
+						say_title("Jutalmad")
+						say_reward("Más játékosokkal szembeni sebzés +10% (Végleges)")
+						say_reward("Szörnyekkel szembeni sebzés +10% (Végleges)")
+						pc.setqf("osszkill", pc.getqf("osszkill") + 1)
+					elseif a >= 2000 and pc.getqf("osszkill") == 1 then
+						say_title("Jutalmad")
+					elseif a >= 4500 and pc.getqf("osszkill") == 2 then
+					elseif a >= 7500 and pc.getqf("osszkill") == 3 then
+					elseif a >= 10000 and pc.getqf("osszkill") == 4 then
+					end
+				end
+			end
+		end
+	end
+end
