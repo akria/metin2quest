@@ -1,0 +1,179 @@
+              ---              --------        -------------------------   ----             ---
+            -------            --------      -------------             --- ----           -------
+           ----------          --------    -------    ----              -------          ----------
+        --------------         --------  -------      ----              -------        --------------
+       ----------------        -------- -------       ----            ---  ----       ----------------
+      --------- ---------      ---------------        ------------------   ----      --------- ---------
+     ---------   ---------     ---------------        ------------------   ----     ---------   ---------
+    ---------     ---------    --------  -------      ----          ---    ----    ---------     ---------
+   ---------       ---------   --------    -------    ----           ---   ----   ---------       ---------
+  ---------         ---------  --------      -------  ----            ---  ----  ---------         ---------
+ ---------           --------- --------        -----------             --- ---- ---------           ---------
+---------             -----------------         ----------              ----------------             ---------
+
+quest farmmap begin
+  state start begin
+	
+	-- Event beállítás
+		when letter with game.get_event_flag("fmapevent") == 1 begin
+			setskin(NOWINDOW)
+			makequestbutton("Farm-map belépés")
+		end
+		
+		when letter with game.get_event_flag("fmapevent") == 0 begin
+			clear_letter()
+		end
+		
+		when info or button begin
+			say("Be akarsz belépni a Farm-mapra?")
+			local a = select("Igen", "Nem")
+			if a == 2 then
+				return
+			end
+			if a == 1 then
+				if pc.get_empire() == 1 then
+					pc.warp(128500, 1000)
+				end
+				if pc.get_empire() == 2 then
+					pc.warp(179500, 1000)
+				end
+				if pc.get_empire() == 3 then
+					pc.warp(271800, 13000)
+				end
+			end
+		end
+		
+		when login with pc.get_map_index() == 44 or pc.get_map_index() == 24 or pc.get_map_index() == 4 begin
+			loop_timer("check", 10)
+		end
+		
+		when check.timer with pc.get_map_index() == 44 or pc.get_map_index() == 24 or pc.get_map_index() == 4 begin
+			if not pc.is_gm() and game.get_event_flag("fmapevent") == 0 then
+					if pc.getqf("1ora") == 0 and pc.getqf("2ora") == 0 then
+					notice("Lejárt az idő! ")
+					if pc.get_empire() == 1 then
+						pc.warp(474300, 954800)
+					end
+					if pc.get_empire() == 2 then
+						pc.warp(63800, 166400)
+					end
+					if pc.get_empire() == 3 then
+						pc.warp(959900, 269200)
+					end
+				end
+			end
+		end
+	-- Event beállítás vége
+	
+	-- Beléptető
+		when 20092.chat."Belépés Farm-mapra" begin
+			say_title(mob_name(20092)..":")
+            say("Ez a maga módján egy lenyűgöző környék, de")
+            say("történik itt valaha is egy különleges esemény?")
+            say("Hát inkább nem... Az ország egyéb részein olykor")
+            say("teljesen más a helyzet! Ezért biztosan van egy")
+            say("érdekes hely, ahova teleportálhatlak. Mivel a")
+            say("gonosz ereje ismét megnőtt, a tér és az idő ")
+            say("káoszba süllyedt. Ezért előfordulhat, hogy a")
+            say("visszatérésed nem mindig rögtön sikerül...")
+			wait()
+			say("Viszont a Farm-mapon nem lehet bent lenni")
+			say("örökre...")
+			say("Legfeljebb 2 órát lehetsz bennt, minimum 1et")
+			say("")
+            say("Szeretnél ennek ellenére teleportálódni?")
+            local main_set = select("Igen","Nem")
+			if main_set == 2 then
+				return
+			end
+			if main_set == 1 then
+				if pc.countitem(49007) > 0 and pc.countitem(49008) > 0 then
+					say_title(mob_name(9012)..":")
+					say("Mennyi időre szeretnél bemenni?")
+					say("")
+					say_reward("Választott idő szerint veszem el a belépőt")
+					local u = select("1 óra", "2 óra", "Mégse")
+					if u == 3 then
+						return
+					end
+					if u == 1 then
+						pc.setqf("1ora", 1)
+						pc.removeitem(49007, 1)
+						if pc.get_empire() == 1 then
+							pc.warp(128500, 1000)
+						elseif pc.get_empire() == 2 then
+							pc.warp(179500, 1000)
+						else
+							pc.warp(271800, 13000)
+						end
+					end
+					if u == 2 then
+						timer("vege", 60*60*2)
+						pc.setqf("2ora", 1)
+						pc.removeitem(49008, 1)
+						if pc.get_empire() == 1 then
+							pc.warp(128500, 1000)
+						elseif pc.get_empire() == 2 then
+							pc.warp(179500, 1000)
+						else
+							pc.warp(271800, 13000)
+						end
+					end
+				else
+					if pc.countitem(49007) > 0 then
+						timer("vege", 60*60)
+						pc.setqf("1ora", 1)
+						pc.removeitem(49007, 1)
+						if pc.get_empire() == 1 then
+							pc.warp(128500, 1000)
+						elseif pc.get_empire() == 2 then
+							pc.warp(179500, 1000)
+						else
+							pc.warp(271800, 13000)
+						end
+					elseif pc.countitem(49008) > 0 then
+						timer("vege", 60*60*2)
+						pc.setqf("2ora", 1)
+						pc.removeitem(49008, 1)
+						if pc.get_empire() == 1 then
+							pc.warp(128500, 1000)
+						elseif pc.get_empire() == 2 then
+							pc.warp(179500, 1000)
+						else
+							pc.warp(271800, 13000)
+						end
+					else
+						say("Sajnos nincs mivel bemenni")
+						say("")
+						say_reward("A belépők:")
+						say_item_vnum(49007)
+						say_item_vnum(49008)
+					end
+				end
+			end
+		end
+		
+		when 20092.chat."Farm-map GM-eknek" with pc.is_gm() == true begin
+			say("GM-ként beléphetsz bármelyik mapra, ")
+			say("bármennyi időre.")
+			say("")
+			say_reward("Hova szeretnél menni?")
+			local u = select("Jungrang", "Waryong", "Imha", "Mégse")
+			if u == 1 then
+				pc.warp(128500, 1000)
+			end
+			if u == 2 then
+				pc.warp(179500, 1000)
+			end
+			if u == 3 then
+				pc.warp(271800, 13000)
+			end
+			if u == 4 then
+				return
+			end
+		end
+		
+	-- Beléptető vége
+
+	end
+end
