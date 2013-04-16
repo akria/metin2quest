@@ -1,0 +1,425 @@
+              ---              --------        -------------------------   ----             ---
+            -------            --------      -------------             --- ----           -------
+           ----------          --------    -------    ----              -------          ----------
+        --------------         --------  -------      ----              -------        --------------
+       ----------------        -------- -------       ----            ---  ----       ----------------
+      --------- ---------      ---------------        ------------------   ----      --------- ---------
+     ---------   ---------     ---------------        ------------------   ----     ---------   ---------
+    ---------     ---------    --------  -------      ----          ---    ----    ---------     ---------
+   ---------       ---------   --------    -------    ----           ---   ----   ---------       ---------
+  ---------         ---------  --------      -------  ----            ---  ----  ---------         ---------
+ ---------           --------- --------        -----------             --- ---- ---------           ---------
+---------             -----------------         ----------              ----------------             ---------
+
+quest qado begin
+  state start begin
+		when 20359.chat."Szeretnék küldetést" begin
+			if pc.getqf("kuldi") == 0 then
+				say("")
+				say("Háromféle küldetésből tudsz választani")
+				say("Van könnyű, közepes és nehéz")
+				say("")
+				say("Milyet szeretnél csinálni?")
+				local a = select("Könnyű (lvl20-tól) ", "Közepes (lvl40-től) ", "Nehéz (lvl60-tól) ", "Extra (lvl80-tól)" ,"Mégse")
+				if a == 5 then
+				end
+				if a == 1 then
+					if pc.get_level() > 20 then-- Könnyű
+						local b = number(1, 2)
+						if b == 1 then
+							set_skin( NOWINDOW )
+							pc.setqf("kuldi", 1)
+							pc.setqf("konnyu", 1)
+							set_state(k1)
+						end
+						if b == 2 then
+							set_skin( NOWINDOW )
+							pc.setqf("kuldi", 1)
+							pc.setqf("konnyu", 2)
+							set_state(k2)
+						end
+					else
+						say("Nincs meg a kellő szint a küldetéshez")
+					end
+				end
+				if a == 2 then -- Közepes
+					if pc.get_level() > 40 then
+						local d = number(1, 2)
+						if d == 1 then
+							set_skin( NOWINDOW )
+							pc.setqf("kuldi", 1)
+							pc.setqf("kozepes", 1)
+							set_state(n1)
+						end
+						if d == 2 then
+							set_skin( NOWINDOW )
+							pc.setqf("kuldi", 1)
+							pc.setqf("kozepes", 2)
+							set_state(n2)
+						end
+					else
+						say("Nincs meg a kellő szint a küldetéshez")
+					end
+				end
+				if a == 3 then -- Nehéz
+					if pc.get_level() > 60 then
+						local r = number(1,2)
+						if r == 1 then
+							set_skin(NOWINDOW)
+							pc.setqf("kuldi", 1)
+							pc.setqf("nehez1", 1)
+							set_state(neh1)
+						end
+						if r == 2 then
+							set_skin(NOWINDOW)
+							pc.setqf("kuldi", 1)
+							pc.setqf("nehez2", 1)
+							set_state(neh2)
+						end
+					else
+						say("Nincs meg a kellő szint a küldetéshez")
+					end
+				end
+				if a == 4 then -- Extra
+					if pc.get_level() > 80 then
+						local e = number(1, 2)
+						if e == 1 then
+							setksin( NOWINDOW )
+							pc.setqf("kuldi", 1)
+							pc.setqf("extra1", 1)
+							set_state(ex1)
+						end
+						if e == 2 then
+							set_skin(NOWINDOW)
+							pc.setqf("kuldi", 1)
+							pc.setqf("extra2", 1)
+							set_state(ex2)
+						end
+					else
+						say("Nincs meg a kellő szint a küldetéshez")
+					end
+				end
+			else
+				say("Egyszerre csak egy küldetést")
+				say("vehetsz fel")
+			end
+		end
+	end
+	state k1 begin
+		when 20359.chat."Feladom a küldetést begin" begin
+			say("Valóban meghátrálsz?")
+			local a = select("Igen", "Nem")
+			if a == 1 then
+				pc.setqf("kuldi", 0)
+				pc.setqf("konnyu", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when button or info begin
+			say("A küldetés")
+			say("Könnyű küldetést válaszottál.")
+			say("Menj és ölj meg 1 Bera-t.")
+		end
+		when 193.kill with pc.getqf("konnyu") == 1 begin
+			notice("Küldetés teljesítve")
+			pc.give_exp2(100000)
+			pc.give_item2(30169, 5)
+			pc.give_item2(30170, 5)
+			pc.give_item2(30171, 5)
+			pc.setqf("kuldi", 0)
+			pc.setqf("konnyu", 0)
+			clear_letter()
+			set_state(start)
+		end
+	end
+	state k2 begin
+		when 20359.chat."Feladom a küldetést begin" begin
+			say("Valóban meghátrálsz?")
+			local a = select("Igen", "Nem")
+			if a == 1 then
+				pc.setqf("kuldi", 0)
+				pc.setqf("konnyu", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when button or info begin
+			say("A küldetés")
+			say("Könnyű küldetést válaszottál")
+			say("Menj öld meg a főorkot")
+		end
+		when 691.kill with pc.getqf("konnyu") == 2 begin
+			notice("Küldetés teljesítve")
+			local a = pc.get_job()
+			if a == 0 then
+				pc.give_item2(30169, 5)
+				pc.give_item2(30170, 5)
+				pc.give_item2(30171, 5)
+				pc.give_exp2(400000)
+				pc.setqf("kuldi", 0)
+				pc.setqf("konnyu", 0)
+				clear_letter()
+				set_state(start)
+			end
+			if a == 2 then
+				pc.give_item2(30169, 5)
+				pc.give_item2(30170, 5)
+				pc.give_item2(30171, 5)
+				pc.give_exp2(400000)
+				pc.setqf("kuldi", 0)
+				pc.setqf("konnyu", 0)
+				clear_letter()
+				set_state(start)
+			end
+			if a == 1 then
+				pc.give_item2(30169, 5)
+				pc.give_item2(30170, 5)
+				pc.give_item2(30171, 5)
+				pc.give_exp2(400000)
+				pc.setqf("kuldi", 0)
+				pc.setqf("konnyu", 0)
+				clear_letter()
+				set_state(start)
+			end
+			if a == 3 then
+				pc.give_item2(30169, 5)
+				pc.give_item2(30170, 5)
+				pc.give_item2(30171, 5)
+				pc.give_exp2(400000)
+				pc.setqf("kuldi", 0)
+				pc.setqf("konnyu", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+	end
+	
+	state n1 begin
+		when 20359.chat."Feladom a küldetést begin" begin
+			say("Valóban meghátrálsz?")
+			local a = select("Igen", "Nem")
+			if a == 1 then
+				pc.setqf("kozepes", 0)
+				pc.setqf("kuldi", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when info or button begin
+			say("Ölj meg egy Árnyék metint")
+		end
+		when 8009.kill with pc.getqf("kozepes") == 1 begin
+			notice("Küldetés teljesítve")
+			pc.give_item2(30169, 15)
+			pc.give_item2(30170, 15)
+			pc.give_item2(30171, 15)
+			pc.setqf("kozepes", 0)
+			pc.setqf("kuldi", 0)
+			clear_letter()
+			set_state(start)
+		end
+	end
+	
+	state n2 begin
+		when 20359.chat."Feladom a küldetést begin" begin
+			say("Valóban meghátrálsz?")
+			local a = select("Igen", "Nem")
+			if a == 1 then
+				pc.setqf("kuldi", 0)
+				pc.setqf("kozepes", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when info or button begin
+			say("A küldetés")
+			say("Közepes nehézségű küldetést válaszottál")
+			say("Öld meg a Démon Királyt")
+		end
+		when 1091.kill with pc.getqf("kozepes") == 2 begin
+			notice("Küldetés teljesítve")
+			pc.give_item2(30169, 15)
+			pc.give_item2(30170, 15)
+			pc.give_item2(30171, 15)
+			pc.setqf("kuldi", 0)
+			pc.setqf("kozepes", 0)
+			pc.setqf("n2kill", 0)
+			clear_letter()
+			set_state(start)
+		end
+	end
+	
+	state neh1 begin
+		when 20359.chat."Feladom a küldetést begin" begin
+			say("Valóban meghátrálsz?")
+			local a = select("Igen", "Nem")
+			if a == 1 then
+				pc.setqf("neh1szam", 0)
+				pc.setqf("kuldi", 0)
+				pc.setqf("nehtek", 0)
+				pc.setqf("nehez1", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when info or button begin
+			say("A küldetés")
+			say("Menj lélekbralangba, és ölj 150 szörnyet")
+			say("az Égi klánból")
+			if pc.getqf("nehtek") == 0 then
+				pc.setqf("nehtek", 1)
+				pc.setqf("neh1szam", 0)
+			end
+			say_reward("")
+			say_reward("Eddig " .. pc.getqf("neh1szam").."-t öltél a 150ből")
+		end
+		when 1131.kill or 1132.kill or 1133.kill or 1134.kill or 1136.kill or 1137.kill with pc.getqf("nehez1") == 1 begin
+			if pc.getqf("neh1szam") < 150 then
+				pc.setqf("neh1szam", pc.getqf("neh1szam") + 1)
+			else
+				notice("Küldetés teljesítve")
+				pc.give_item2(30169, 20)
+				pc.give_item2(30170, 20)
+				pc.give_item2(30171, 20)
+				pc.setqf("neh1szam", 0)
+				pc.setqf("kuldi", 0)
+				pc.setqf("nehtek", 0)
+				pc.setqf("nehez1", 0)
+				pc.give_exp2(300000)
+				clear_letter()
+				set_state(start)
+			end
+		end
+	end
+	
+	state neh2 begin
+		when 20359.chat."Feladom a küldetést begin" begin
+			say("Valóban meghátrálsz?")
+			local a = select("Igen", "Nem")
+			if a == 1 then
+				pc.setqf("neh2tek", 0)
+				pc.setqf("neh2szam", 0)
+				pc.setqf("nehez2", 0)
+				pc.setqf("kuldi", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when info or button begin
+			say("A küldetés")
+			say("Menj lélekbarlangba és ölj 100 Setaou katonát")
+			if pc.getqf("neh2tek") == 0 then
+				pc.setqf("neh2tek", 1)
+				pc.setqf("neh2szam", 0)
+			end
+			say_reward("")
+			say_reward("Eddig " ..pc.getqf("neh2szam").. "-t öltél a 100ból")
+		end
+		when 2401.kill or 2402.kill with pc.getqf("nehez2") == 1 begin
+			if pc.getqf("neh2szam") < 100 then
+				pc.setqf("neh2szam", pc.getqf("neh2szam") + 1)
+			else
+				notice("Küldetés teljesítve")
+				pc.give_item2(30169, 20)
+				pc.give_item2(30170, 20)
+				pc.give_item2(30171, 20)
+				pc.give_exp(250000)
+				pc.setqf("neh2szam", 0)
+				pc.setqf("kuldi", 0)
+				pc.setqf("neh2tek", 0)
+				pc.setqf("nehez2", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+	end
+	
+	state ex1 begin
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when info or button begin
+			say("A küldetés")
+			say("Menj Atlantisra és ölj a rák klánból")
+			say("500 katonát")
+			if pc.getqf("ex1") == 0 then
+				pc.setqf("ex1", 1)
+				pc.setqf("rakklan", 0)
+			end
+			say_reward("")
+			say_reward("Eddig " ..pc.getqf("rakklan").. "-t öltél meg az 500-ból")
+		end
+		
+		when 3003.kill or 3004.kill or 3005.kill with pc.getqf("extra1") == 1 begin
+			if pc.getqf("rakklan") < 500 then
+				local szam = pc.getqf("rakklan") + 1
+				pc.setqf("rakklan", szam)
+			else
+				notice("Küldetés teljesítve")
+				pc.give_item2(30169, 30)
+				pc.give_item2(30170, 30)
+				pc.give_item2(30171, 30)
+				pc.setqf("rakklan", 0)
+				pc.give_exp2(25000000)
+				pc.setqf("kuldi", 0)
+				pc.setqf("ex1", 0)
+				pc.setqf("extra1", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+	end
+	
+	state ex2 begin
+		when letter begin
+			send_letter("A küldetés")
+		end
+		when info or button begin
+			say("A küldetés")
+			say("Menj Atlantisra és ölj a triton klánból 300 katonát")
+			if pc.getqf("ex2") == 0 then
+				pc.setqf("ex2", 1)
+				pc.setqf("ex2szam", 0)
+			end
+			say_reward("")
+			say_reward("Eddig " ..pc.getqf("ex2szam").. "-t öltél a 300-ból")
+		end
+		when 3595.kill or 3591.kill with pc.getqf("extra2") == 1 begin
+			if pc.getqf("ex2szam") < 300 then
+				local szam = pc.getqf("ex2szam") + 1
+				pc.setqf("ex2szam", szam)
+			else
+				notice("Küldetés teljesítve")
+				pc.give_item2(30169, 30)
+				pc.give_item2(30170, 30)
+				pc.give_item2(30171, 30)
+				pc.give_exp2(25000000)
+				pc.setqf("ex2szam", 0)
+				pc.setqf("kuldi", 0)
+				pc.setqf("ex2", 0)
+				pc.setqf("extra2", 0)
+				clear_letter()
+				set_state(start)
+			end
+		end
+	end
+end
