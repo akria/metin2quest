@@ -1,0 +1,53 @@
+              ---              --------        -------------------------   ----             ---
+            -------            --------      -------------             --- ----           -------
+           ----------          --------    -------    ----              -------          ----------
+        --------------         --------  -------      ----              -------        --------------
+       ----------------        -------- -------       ----            ---  ----       ----------------
+      --------- ---------      ---------------        ------------------   ----      --------- ---------
+     ---------   ---------     ---------------        ------------------   ----     ---------   ---------
+    ---------     ---------    --------  -------      ----          ---    ----    ---------     ---------
+   ---------       ---------   --------    -------    ----           ---   ----   ---------       ---------
+  ---------         ---------  --------      -------  ----            ---  ----  ---------         ---------
+ ---------           --------- --------        -----------             --- ---- ---------           ---------
+---------             -----------------         ----------              ----------------             ---------
+
+quest nonap begin
+  state start begin
+		when login with game.get_event_flag("nonap") == 1 begin
+			set_state(next)
+		end
+	end
+	
+	state next begin	
+		when login with pc.get_sex() == 0 begin
+			--Globális adatok lekérése
+			if MOB_LEVEL==nil then
+				local _in=mysql_query("SELECT vnum, level FROM player.mob_proto WHERE vnum > 0 AND vnum < 9000 ORDER BY vnum;")
+				MOB_LEVEL={}--NEM LOCAL!!!!!!
+				for i=1,table.getn(_in) do
+					table.insert(MOB_LEVEL, _in[i][1], _in[i][2])
+				end
+				test_chat(string.format("Mob table is loaded in with %d pcs. mobs!",table.getn(MOB_LEVEL)))
+			end
+			--Globális adatok lekérése
+		end
+		when kill with not npc.is_pc() begin
+			if game.get_event_flag("nonap") == 1 then
+				if pc.get_sex() == 0 then
+					if MOB_LEVEL~=nil and MOB_LEVEL[npc.get_race()]~=nil then
+						test_chat(string.format("Mob's Level: %d", MOB_LEVEL[npc.get_race()]))
+						if pc.get_level()-15 <= MOB_LEVEL[npc.get_race()] and pc.get_level()+15 >= MOB_LEVEL[npc.get_race()] then
+							local n=number(1,1500)
+							if n <= 5 then
+								pc.give_item2(50024, 1)
+							end
+							if n <= 10 and n > 5 then
+								pc.give_item2(50032, 1)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
