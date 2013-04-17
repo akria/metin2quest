@@ -1,0 +1,636 @@
+              ---              --------        -------------------------   ----             ---
+            -------            --------      -------------             --- ----           -------
+           ----------          --------    -------    ----              -------          ----------
+        --------------         --------  -------      ----              -------        --------------
+       ----------------        -------- -------       ----            ---  ----       ----------------
+      --------- ---------      ---------------        ------------------   ----      --------- ---------
+     ---------   ---------     ---------------        ------------------   ----     ---------   ---------
+    ---------     ---------    --------  -------      ----          ---    ----    ---------     ---------
+   ---------       ---------   --------    -------    ----           ---   ----   ---------       ---------
+  ---------         ---------  --------      -------  ----            ---  ----  ---------         ---------
+ ---------           --------- --------        -----------             --- ---- ---------           ---------
+---------             -----------------         ----------              ----------------             ---------
+
+-- Alap: http://www.elitepvpers.com/forum/metin2-pserver-guides-strategies/1936067-release-official-pets-quest.html
+-- Fejlődő kisállatok
+
+quest official_pets begin
+    state start begin
+  	
+		when kill with pc.getqf("firephoenix") == 1 or pc.getqf("icephoenix") == 1 or pc.getqf("reindeer") == 1 or pc.getqf("pwahuang") == 1 or pc.getqf("dog") == 1 or pc.getqf("lion") == 1 or pc.getqf("pig") == 1 or pc.getqf("tiger") == 1 begin
+			
+			local next_level = { 2000, 4000, 6000, 8000, 10000 }
+			
+			if pc.getqf("firephoenix") == 1 and pc.getqf("firephoenix_level") != 5 then
+				if next_level[pc.getqf("firephoenix_level")] == pc.getqf("firephoenix_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("firephoenix_level", pc.getqf("firephoenix_level")+1)
+				else
+					pc.setqf("firephoenix_kill", pc.getqf("firephoenix_kill")+1)
+				end
+			elseif pc.getqf("icephoenix") == 1 and pc.getqf("icephoenix_level") != 5 then
+				if next_level[pc.getqf("icephoenix_level")] == pc.getqf("icephoenix_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("icephoenix_level", pc.getqf("icephoenix_level")+1)
+				else
+					pc.setqf("icephoenix_kill", pc.getqf("icephoenix_kill")+1)
+				end
+			elseif pc.getqf("reindeer") == 1 and pc.getqf("reindeer") != 5 then
+				if next_level[pc.getqf("reindeer_level")] == pc.getqf("reindeer_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("reindeer_level", pc.getqf("reindeer_level")+1)
+				else
+					pc.setqf("reindeer_kill", pc.getqf("reindeer_kill")+1)
+				end
+			elseif pc.getqf("pwahuang") == 1 and pc.getqf("pwahuang_level") != 5 then
+				if next_level[pc.getqf("pwahuang_level")] == pc.getqf("pwahuang_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("pwahuang_level", pc.getqf("pwahuang_level")+1)
+				else
+					pc.setqf("pwahuang_kill", pc.getqf("pwahuang_kill")+1)
+				end
+			elseif pc.getqf("dog") == 1 and pc.getqf("dog_level") != 5 then
+				if next_level[pc.getqf("dog_level")] == pc.getqf("dog_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("dog_level", pc.getqf("dog_level")+1)
+				else
+					pc.setqf("dog_kill", pc.getqf("dog_kill")+1)
+				end
+			elseif pc.getqf("lion") == 1 and pc.getqf("lion_level") != 5 then
+				if next_level[pc.getqf("lion_level")] == pc.getqf("lion_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("lion_level", pc.getqf("lion_level")+1)
+				else
+					pc.setqf("lion_kill", pc.getqf("lion_kill")+1)
+				end
+			elseif pc.getqf("pig") == 1 and pc.getqf("pig_level") != 5 then
+				if next_level[pc.getqf("pig_level")] == pc.getqf("pig_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("pig_level", pc.getqf("pig_level")+1)
+				else
+					pc.setqf("pig_kill", pc.getqf("pig_kill")+1)
+				end
+			elseif pc.getqf("tiger") == 1 and pc.getqf("tiger_level") != 5 then
+				if next_level[pc.getqf("tiger_level")] == pc.getqf("tiger_kill") then
+					notice("A kisállatod szintet lépett! Kérlek hívd újra!")
+					pc.setqf("tiger_level", pc.getqf("tiger_level")+1)
+				else
+					pc.setqf("tiger_kill", pc.getqf("tiger_kill")+1)
+				end
+			end
+		end
+		
+        when 53001.use with pc.getqf("icephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("pwahuang") == 0 and pc.getqf("dog") == 0 and pc.getqf("lion") == 0 and pc.getqf("pig") == 0 and pc.getqf("tiger") == 0 begin
+			
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("firephoenix_level") == 0 then
+				pc.setqf("firephoenix_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+				if pc.getqf("firephoenix_use") == 0 then
+					chat("A kisállatod sikeresen elő lett hívva!")
+					local your_horse_level = horse.get_level()
+					pc.setqf("horse_level_save", your_horse_level)
+					pc.setqf("firephoenix_use", 1)
+					pc.setqf("firephoenix", 1)
+					affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("firephoenix_level")][1], 60*60*8)
+					affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("firephoenix_level")][2], 60*60*8)
+					affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("firephoenix_level")][3], 60*60*8)
+					horse.set_level("22")
+					horse.set_name(pc.get_name().." Tűz főnixe (Lv. " ..pc.getqf("firephoenix_level").. ")")
+					horse.unsummon() horse.summon()
+					
+					local horse_settings = pc.getqf("horse_level_save")
+					horse.set_level(horse_settings)
+				else
+					chat("A kisállatod elment!")
+					affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("firephoenix_level")][1], 60*60*8)
+					affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("firephoenix_level")][2], 60*60*8)   
+					affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("firephoenix_level")][3], 60*60*8)                
+					horse.unsummon()
+					horse.set_name(pc.get_name().." lova")
+					pc.setqf("firephoenix_use", 0)
+					pc.setqf("firephoenix", 0)
+					
+					local horse_settings = pc.getqf("horse_level_save")
+					horse.set_level(horse_settings)
+				
+				end
+			end
+        end
+        when logout or login with pc.getqf("firephoenix_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("firephoenix_use", 0)
+            pc.setqf("firephoenix", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+			horse.set_name(pc.get_name().. " lova")
+            horse.set_level(horse_settings)
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("firephoenix_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("firephoenix_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("firephoenix_level")][3], 60*60*8) 
+        end
+        when 53003.use with pc.getqf("firephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("pwahuang") == 0 and pc.getqf("dog") == 0 and pc.getqf("lion") == 0 and pc.getqf("pig") == 0 and pc.getqf("tiger") == 0 begin
+			
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("icephoenix_level") == 0 then
+				pc.setqf("icephoenix_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("icephoenix_use") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("icephoenix_use", 1)
+                pc.setqf("icephoenix", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("icephoenix_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("icephoenix_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("icephoenix_level")][3], 60*60*8)
+                horse.set_level("23")
+				horse.set_name(pc.get_name().. " Jég Főnixe (Lv. " ..pc.getqf("icephoenix_level").. ")")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+				affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("icephoenix_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("icephoenix_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("icephoenix_level")][3], 60*60*8) 
+				horse.set_name(pc.get_name().." lova")
+                horse.unsummon()
+                pc.setqf("icephoenix_use", 0)
+                pc.setqf("icephoenix", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("icephoenix_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("icephoenix_use", 0)
+            pc.setqf("icephoenix", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+			horse.set_name(pc.get_name().." lova")
+            horse.set_level(horse_settings)
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("icephoenix_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("icephoenix_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("icephoenix_level")][3], 60*60*8) 
+        end
+		when 53002.use with pc.getqf("firephoenix") == 0 and pc.getqf("icephoenix") == 0 and pc.getqf("pwahuang") == 0 and pc.getqf("dog") == 0 and pc.getqf("lion") == 0 and pc.getqf("pig") == 0 and pc.getqf("tiger") == 0 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("reindeer_level") == 0 then
+				pc.setqf("reindeer_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("reindeer") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("reindeer_use", 1)
+				pc.setqf("reindeer", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("reindeer_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("reindeer_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("reindeer_level")][3], 60*60*8)
+                horse.set_level("24")
+				horse.set_name(pc.get_name().. " Rénszarvasa (Lv. " ..pc.getqf("reindeer_level").. ")")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+				affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("reindeer_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("reindeer_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("reindeer_level")][3], 60*60*8)       
+                horse.unsummon()
+				horse.set_name(pc.get_name().." lova")
+                pc.setqf("reindeer_use", 0)
+				pc.setqf("reindeer", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("reindeer_use") == 1 begin
+            
+            local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			pc.setqf("reindeer_use", 0)
+			pc.setqf("reindeer", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+			horse.set_name(pc.get_name().." lova")
+            horse.set_level(horse_settings)
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("reindeer_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("reindeer_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("reindeer_level")][3], 60*60*8) 
+        end
+		when 53005.use with pc.getqf("firephoenix") == 0 and pc.getqf("icephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("dog") == 0 and pc.getqf("lion") == 0 and pc.getqf("pig") == 0 and pc.getqf("tiger") == 0 begin
+				
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+
+		   if pc.getqf("pwahuang_level") == 0 then
+				pc.setqf("pwahuang_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("pwahuang") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("pwahuang_use", 1)
+				pc.setqf("pwahuang", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("pwahuang_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("pwahuang_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("pwahuang_level")][3], 60*60*8)
+				horse.set_name(pc.get_name().. " Bébi Azraele (Lv. " ..pc.getqf("pwahuang_level").. ")")
+                horse.set_level("25")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+				affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("pwahuang_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("pwahuang_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("pwahuang_level")][3], 60*60*8)     
+                horse.unsummon()
+				horse.set_name(pc.get_name().." lova")
+                pc.setqf("pwahuang_use", 0)
+				pc.setqf("pwahuang", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("pwahuang_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("pwahuang_use", 0)
+			pc.setqf("pwahuang", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+			horse.set_name(pc.get_name().." lova")
+            horse.set_level(horse_settings)
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("pwahuang_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("pwahuang_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("pwahuang_level")][3], 60*60*8) 
+        end
+		when 53006.use with pc.getqf("lion") == 0 and pc.getqf("pig") == 0 and pc.getqf("tiger") == 0 and pc.getqf("firephoenix") == 0 and pc.getqf("icephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("pwahuang") == 0 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("dog_level") == 0 then
+				pc.setqf("dog_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("dog_use") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("dog_use", 1)
+                pc.setqf("dog", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("dog_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("dog_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("dog_level")][3], 60*60*8)
+                horse.set_level("26")
+				horse.set_name(pc.get_name().. " Bébi Kutyája (Lv. " ..pc.getqf("dog_level").. ")")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+				affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("dog_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("dog_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("dog_level")][3], 60*60*8)                   
+                horse.unsummon()
+				horse.set_name(pc.get_name().." lova")
+                pc.setqf("dog_use", 0)
+                pc.setqf("dog", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("dog_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("dog_use", 0)
+            pc.setqf("dog", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+            horse.set_level(horse_settings)
+			horse.set_name(pc.get_name().." lova")
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("dog_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("dog_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("dog_level")][3], 60*60*8)   
+        end
+        when 53007.use with pc.getqf("dog") == 0 and pc.getqf("pig") == 0 and pc.getqf("tiger") == 0 and pc.getqf("firephoenix") == 0 and pc.getqf("icephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("pwahuang") == 0 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("lion_level") == 0 then
+				pc.setqf("lion_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("lion_use") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("lion_use", 1)
+                pc.setqf("lion", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("lion_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("lion_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("lion_level")][3], 60*60*8)
+                horse.set_level("27")
+				horse.set_name(pc.get_name().. " Bébi Oroszlánja (Lv. " ..pc.getqf("lion_level").. ")")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+				affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("lion_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("lion_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("lion_level")][3], 60*60*8)    
+                horse.unsummon()
+				horse.set_name(pc.get_name().." lova")
+                pc.setqf("lion_use", 0)
+                pc.setqf("lion", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("lion_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("lion_use", 0)
+            pc.setqf("lion", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+            horse.set_level(horse_settings)
+			horse.set_name(pc.get_name().." lova")
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("lion_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("lion_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("lion_level")][3], 60*60*8) 
+        end
+		when 53008.use with pc.getqf("dog") == 0 and pc.getqf("lion") == 0 and pc.getqf("tiger") == 0 and pc.getqf("firephoenix") == 0 and pc.getqf("icephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("pwahuang") == 0 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("pig_level") == 0 then
+				pc.setqf("pig_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("pig") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("pig_use", 1)
+				pc.setqf("pig", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("pig_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("pig_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("pig_level")][3], 60*60*8)
+                horse.set_level("28")
+				horse.set_name(pc.get_name().. " Bébi Vaddisznója (Lv. " ..pc.getqf("pig_level").. ")")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+				affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("pig_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("pig_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("pig_level")][3], 60*60*8)        
+                horse.unsummon()
+				horse.set_name(pc.get_name().." lova")
+                pc.setqf("pig_use", 0)
+				pc.setqf("pig", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("pig_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("pig_use", 0)
+			pc.setqf("pig", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+            horse.set_level(horse_settings)
+			horse.set_name(pc.get_name().." lova")
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("pig_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("pig_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("pig_level")][3], 60*60*8) 
+        end
+		when 53009.use with pc.getqf("dog") == 0 and pc.getqf("lion") == 0 and pc.getqf("pig") == 0 and pc.getqf("firephoenix") == 0 and pc.getqf("icephoenix") == 0 and pc.getqf("reindeer") == 0 and pc.getqf("pwahuang") == 0 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+			if pc.getqf("tiger_level") == 0 then
+				pc.setqf("tiger_level", 1)
+			end
+			if pc.is_riding() then
+				chat("Kérlek szállj le a lórol")
+			else
+			if pc.getqf("tiger") == 0 then
+                chat("A kisállatod sikeresen elő lett hívva!")
+                local your_horse_level = horse.get_level()
+                pc.setqf("horse_level_save", your_horse_level)
+                pc.setqf("tiger_use", 1)
+				pc.setqf("tiger", 1)
+				affect.add_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("tiger_level")][1], 60*60*8)
+				affect.add_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("tiger_level")][2], 60*60*8)
+				affect.add_collect(apply.ATT_MAX_HP, bonus[pc.getqf("tiger_level")][3], 60*60*8)
+                horse.set_level("29")
+				horse.set_name(pc.get_name().. " Bébi Tigrise (Lv. " ..pc.getqf("tiger_level").. ")")
+                horse.unsummon() horse.summon()
+				
+				local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            else
+                chat("A kisállatod elment!")
+                affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("tiger_level")][1], 60*60*8)
+				affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("tiger_level")][2], 60*60*8)   
+				affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("tiger_level")][3], 60*60*8)       
+                horse.unsummon()
+				horse.set_name(pc.get_name().." lova")
+                pc.setqf("tiger_use", 0)
+				pc.setqf("tiger", 0)
+                
+                local horse_settings = pc.getqf("horse_level_save")
+                horse.set_level(horse_settings)
+            
+            end
+			end
+        end
+        when logout or login with pc.getqf("tiger_use") == 1 begin
+            
+			local bonus = {
+				{ 50, 50, 500 },
+				{ 100, 100, 750 },
+				{ 150, 150, 1000 },
+				{ 200, 200, 1500 },
+				{ 250, 250, 2500 },
+			}
+			
+            pc.setqf("tiger_use", 0)
+			pc.setqf("tiger", 0)
+                
+            local horse_settings = pc.getqf("horse_level_save")
+            horse.set_level(horse_settings)
+			horse.set_name(pc.get_name().." lova")
+            
+            chat("A kisállatod elment!")
+            affect.remove_collect(apply.ATT_GRADE_BONUS, bonus[pc.getqf("tiger_level")][1], 60*60*8)
+			affect.remove_collect(apply.DEF_GRADE_BONUS, bonus[pc.getqf("tiger_level")][2], 60*60*8)   
+			affect.remove_collect(apply.MAX_HP, bonus[pc.getqf("tiger_level")][3], 60*60*8)     
+        end
+    end
+end  
