@@ -13,6 +13,7 @@
 
 -- Alap: http://www.elitepvpers.com/forum/metin2-pserver-guides-strategies/1936067-release-official-pets-quest.html
 -- Fejlődő kisállatok
+-- Quest for Heaven2. http://mt2heaven.net/
 
 quest official_pets begin
     state start begin
