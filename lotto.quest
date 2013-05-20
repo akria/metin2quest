@@ -1,0 +1,265 @@
+              ---              --------        -------------------------   ----             ---
+            -------            --------      -------------             --- ----           -------
+           ----------          --------    -------    ----              -------          ----------
+        --------------         --------  -------      ----              -------        --------------
+       ----------------        -------- -------       ----            ---  ----       ----------------
+      --------- ---------      ---------------        ------------------   ----      --------- ---------
+     ---------   ---------     ---------------        ------------------   ----     ---------   ---------
+    ---------     ---------    --------  -------      ----          ---    ----    ---------     ---------
+   ---------       ---------   --------    -------    ----           ---   ----   ---------       ---------
+  ---------         ---------  --------      -------  ----            ---  ----  ---------         ---------
+ ---------           --------- --------        -----------             --- ---- ---------           ---------
+---------             -----------------         ----------              ----------------             ---------
+
+quest lotto begin
+  state start begin
+		
+		when login with pc.getqf("eheti") == 1 and game.get_event_flag("lehet") == 0 begin
+			lotto.check()
+		end
+		
+		function check()
+			for i = 1, 5 do
+				local sajat_szamok = { "elsoszam", "masodikszam", "harmadikszam", "negyedikszam", "otodikszam" }
+				for u = 1, 5 do
+					local huzott_szamok = { "elso", "masodik", "harmadik", "negyedik", "otodik" }
+					if pc.getqf(sajat_szamok[i]) == game.get_event_flag(huzott_szamok[u]) then
+						pc.setqf("eltalalt", pc.getqf("eltalalt")+1)
+						if pc.getqf("eltalalt") == 5 then
+							say_title("EZAZ!!! ")
+							say("")
+							say("Sikerült! Megnyerted a főnyereményt")
+							local nyert = game.get_event_flag("lottonyer")
+							if nyert == 1 then
+								pc.change_money(game.get_event_flag("lottossz"))
+							elseif nyert == 2 then
+								pc.give_item2(game.get_event_flag("lottossz"), game.get_event_flag("lottodb"))
+							else
+								say("Hiba")
+								say("")
+								say("Kérlek keress fel 1 online GM-et")
+							end
+						end
+					else
+						say_title("Hopp")
+						say("")
+						say("Sajnos nem nyertél")
+						for k = 1,5 do
+							local sajat_szamok = { "elsoszam", "masodikszam", "harmadikszam", "negyedikszam", "otodikszam" }
+							pc.setqf(sajat_szamok[k], 0)
+						end
+					end
+				end
+			end
+		end
+		
+		when 50027.use begin
+			if pc.is_gm() then
+				local p = select("Lottó feladás beállítása", "Számok kihúzása", "Nyeremény beállítása", "Mégse")
+				if p == 4 then
+					return
+				end
+				if p == 1 then
+					if game.get_event_flag("lehet") != 0 then
+						say_title("Lottó ")
+						say("")
+						say("Jelenleg nem lehet lottót feladni.")
+						say("Be szeretnéd kapcsolni?")
+						local o = select("Igen", "Nem")
+						if o == 1 then
+							game.set_event_flag("lottonyer", 0)
+							game.set_event_flag("lottossz", 0)
+							game.set_event_flag("lottodb", 0)
+							local szamok = { "elso", "masodik", "harmadik", "negyedik", "otodik" }
+							for o = 1,5 do
+								game.set_event_flag(szamok[o], 0)
+							end
+							
+							say("Minden nullázva")
+							
+							game.set_event_flag("lehet", 1)
+							notice_all("Mostantól bárki adhat fel lottót! A szerencse legyen veletek!")
+						end
+					else
+						say_title("Lottó ")
+						say("")
+						say("Jelenleg lehet lottót feladni")
+						say("Szeretnéd kikapcsolni?")
+						local o = select("Igen", "Nem")
+						if o == 1 then
+							game.set_event_flag("lehet", 0)
+							notice_all("Eddig lehetett lottót feladni!")
+						end
+					end
+				end
+				if p == 2 then
+					say_title("Lottó ")
+					say("")
+					say("GM-ként nem adhatsz fel lottószelvényt, de")
+					say("bármikor elindíthatod a sorsolást")
+					local o = select("Sorsolj", "Mégse")
+					if o == 1 then
+						local elso = number(1,90)
+						local masodik = number(1,90)
+						local harmadik = number(1,90)
+						local negyedik = number(1,90)
+						local otodik = number(1,90)
+						
+						if elso != masodik and elso != harmadik and elso != negyedik and elso != otodik and masodik != harmadik and masodik != negyedik and masodik != otodik and harmadik != negyedik and harmadik != otodik and negyedik != otodik then
+							say_title("Lottó ")
+							say("")
+							say("A számok:")
+							say(elso .. ", " .. masodik .. ", " .. harmadik .. ", " .. negyedik .. ", " .. otodik)
+							local u = select("Mehet", "Nem tetszenek")
+							if u == 1 then
+								game.set_event_flag("lehet", 0)
+								game.set_event_flag("elso", elso)
+								game.set_event_flag("madosik", masodik)
+								game.set_event_flag("harmadik", harmadik)
+								game.set_event_flag("negyedik", negyedik)
+								game.set_event_flag("otodik", otodik)
+								notice_all("Az eheti számok ki lette húzva!")
+								notice_all(game.get_event_flag("elso") .. ", " .. game.get_event_flag("masodik") .. ", " .. game.get_event_flag("harmadik") .. ", " ..game.get_event_flag("negyedik") .. ", " .. game.get_event_flag("otodik"))
+							end
+						else
+							say_title("Hiba")
+							say("Kérlek ismételd meg a sorsolást")
+						end
+					end
+				end
+				if p == 3 then
+					say_title("Nyeremény beállítása")
+					say("")
+					say("Pénz vagy tárgy legyen a nyeremény? ")
+					local nyerem = select("Pénz", "Tárgy", "Mégse")
+					if nyerem == 1 then
+						say("Mennyi pénz legyen?")
+						local nyeremeny = tonumber(input())
+						if nyeremeny == "" then
+							say("Hiba")
+						elseif nyeremeny < 1 or nyeremeny > 1999999999 then
+							say("Nem megfelelő pénzösszeg")
+						else
+							game.set_event_flag("lottonyer", 1)
+							game.set_event_flag("lottossz", nyeremeny)
+							say("Sikerült")
+						end	
+					end
+					if nyerem == 2 then
+						say("Add meg a nyeremény ID-jét")
+						local nyeremeny = tonumber(input())
+						if nyeremeny == "" then
+							say("Hiba")
+							return
+						else
+							say("Hány darab?")
+							local darab = tonumber(input())
+							if darab == "" then
+								say("Hiba")
+							else
+								game.set_event_flag("lottonyer", 2)
+								game.set_event_flag("lottossz", nyeremeny)
+								game.set_event_flag("lottodb", darab)
+								say("Sikerült")
+							end
+						end
+					end
+				end
+			else
+				if pc.getqf("eheti") == 0 and game.get_event_flag("lehet") != 0 then
+					say_title("Lottó ")
+					say("")
+					say("Szeretnél lottózni?")
+					local a = select("Igen", "Nem")
+					if a == 1 then
+						say_title("Lottó ")
+						say("")
+						say("Add meg az első számot:")
+						say("")
+						say_reward("Később nem változtathatsz rajta!")
+						say("")
+						local b = tonumber(input())
+						if b == "" then
+							say("Meg kell adnod egy számot, addig")
+							say("a szelvény nem lesz érvényes")
+						elseif b < 1 or b > 90 then
+							say("Ez a szám nem megfelelő, 1-90 között")
+							say(" érvényesek a számok")
+						else
+							say_title("Lottó ")
+							say("")
+							say("Add meg a második számot:")
+							say("")
+							local c = tonumber(input())
+							if c == "" then
+								say("Meg kell adnod egy számot, addig")
+								say("a szelvény nem lesz érvényes")
+							elseif c < 1 or c > 90 then
+								say("Ez a szám nem megfelelő, 1-90 között")
+								say(" érvényesek a számok")
+							else
+								say_title("Lottó ")
+								say("")
+								say("Add meg a harmadik számot:")
+								say("")
+								local d = tonumber(input())
+								if d == "" then
+									say("Meg kell adnod egy számot, addig")
+									say("a szelvény nem lesz érvényes")
+								elseif d < 1 or d > 90 then
+									say("Ez a szám nem megfelelő, 1-90 között")
+									say(" érvényesek a számok")
+								else
+									say_title("Lottó ")
+									say("")
+									say("Add meg a negyedik számot:")
+									say("")
+									local e = tonumber(input())
+									if e == "" then
+										say("Meg kell adnod egy számot, addig")
+										say("a szelvény nem lesz érvényes")
+									elseif e < 1 or e > 90 then
+										say("Ez a szám nem megfelelő, 1-90 között")
+										say(" érvényesek a számok")
+									else
+										say_title("Lottó ")
+										say("")
+										say("Add meg az ötödik számot:")
+										say("")
+										local f = tonumber(input())
+										if f == "" then
+											say("Meg kell adnod egy számot, addig")
+											say("a szelvény nem lesz érvényes")
+										elseif f < 1 or f > 90 then
+											say("Ez a szám nem megfelelő, 1-90 között")
+											say(" érvényesek a számok")
+										else
+											say("Lottó feladása érvényes")
+											pc.setqf("eheti", 1)
+											pc.setqf("elsoszam", b)
+											pc.setqf("masodikszam", c)
+											pc.setqf("harmadikszam", d)
+											pc.setqf("negyedikszam", e)
+											pc.setqf("otodikszam", f)
+										end
+									end
+								end
+							end
+						end
+					end
+				else
+					if pc.getqf("eheti") != 0 then
+						say_title("Hiba")
+						say("")
+						say_reward("Hetente csak 1 szelvénnyel játszhatsz")
+					end
+					if game.get_event_flag("lehet") == 0 then
+						say_title("Hiba")
+						say("")
+						say_reward("Jelenleg nem lehet szelvényt feladni")
+					end
+				end
+			end
+		end
+	end
+end
